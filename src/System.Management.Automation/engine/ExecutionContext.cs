@@ -281,6 +281,8 @@ namespace System.Management.Automation
 
             set
             {
+                value = Utils.GetEffectiveLanguageMode(value);
+
                 // If we're moving to ConstrainedLanguage, invalidate the binding
                 // caches. After that, the binding rules encode the language mode.
                 if (value == PSLanguageMode.ConstrainedLanguage)

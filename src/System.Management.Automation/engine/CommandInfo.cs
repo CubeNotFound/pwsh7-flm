@@ -237,7 +237,13 @@ namespace System.Management.Automation
         /// <summary>
         /// The language mode that was in effect when this alias was defined.
         /// </summary>
-        internal PSLanguageMode? DefiningLanguageMode { get; set; }
+        private PSLanguageMode? _definingLanguageMode;
+
+        internal PSLanguageMode? DefiningLanguageMode
+        {
+            get => _definingLanguageMode;
+            set => _definingLanguageMode = Utils.GetEffectiveLanguageMode(value);
+        }
 
         internal virtual HelpCategory HelpCategory
         {

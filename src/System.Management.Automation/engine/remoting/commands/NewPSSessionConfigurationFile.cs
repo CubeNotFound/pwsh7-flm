@@ -317,7 +317,7 @@ namespace Microsoft.PowerShell.Commands
 
             set
             {
-                _languageMode = value;
+                _languageMode = Utils.GetEffectiveLanguageMode(value);
                 _isLanguageModeSpecified = true;
             }
         }

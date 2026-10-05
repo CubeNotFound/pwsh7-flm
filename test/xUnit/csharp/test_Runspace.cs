@@ -102,6 +102,38 @@ namespace PSTests.Sequential
             }
         }
 
+        [Fact]
+        public void TestConstrainedLanguageIsNormalizedToFullLanguage()
+        {
+            InitialSessionState iss = InitialSessionState.CreateDefault2();
+
+            iss.LanguageMode = PSLanguageMode.RestrictedLanguage;
+            Assert.Equal(PSLanguageMode.RestrictedLanguage, iss.LanguageMode);
+
+            iss.LanguageMode = PSLanguageMode.NoLanguage;
+            Assert.Equal(PSLanguageMode.NoLanguage, iss.LanguageMode);
+
+            iss.LanguageMode = PSLanguageMode.ConstrainedLanguage;
+
+            Assert.Equal(PSLanguageMode.FullLanguage, iss.LanguageMode);
+
+            using (Runspace runspace = RunspaceFactory.CreateRunspace(iss))
+            {
+                runspace.Open();
+                Assert.Equal(PSLanguageMode.FullLanguage, runspace.SessionStateProxy.LanguageMode);
+
+                using (PowerShell powerShell = PowerShell.Create())
+                {
+                    powerShell.Runspace = runspace;
+                    powerShell.AddScript("[System.Environment]::MachineName");
+
+                    var results = powerShell.Invoke();
+                    Assert.False(powerShell.HadErrors);
+                    Assert.Single(results);
+                }
+            }
+        }
+
         [SkippableFact]
         public void TestAppDomainProcessExitEvenHandlerNotLeaking()
         {

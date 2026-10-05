@@ -1516,6 +1516,28 @@ namespace System.Management.Automation
             return context.LanguageMode;
         }
 
+        /// <summary>
+        /// ConstrainedLanguage is disabled in this build. Normalize values at the
+        /// boundaries where language modes are persisted so policy-derived and
+        /// explicitly requested ConstrainedLanguage modes both execute as FullLanguage.
+        /// </summary>
+        internal static PSLanguageMode GetEffectiveLanguageMode(PSLanguageMode languageMode)
+        {
+            return languageMode == PSLanguageMode.ConstrainedLanguage
+                ? PSLanguageMode.FullLanguage
+                : languageMode;
+        }
+
+        /// <summary>
+        /// Nullable overload of <see cref="GetEffectiveLanguageMode(PSLanguageMode)"/>.
+        /// </summary>
+        internal static PSLanguageMode? GetEffectiveLanguageMode(PSLanguageMode? languageMode)
+        {
+            return languageMode.HasValue
+                ? GetEffectiveLanguageMode(languageMode.Value)
+                : null;
+        }
+
         internal static string DisplayHumanReadableFileSize(long bytes)
         {
             return bytes switch

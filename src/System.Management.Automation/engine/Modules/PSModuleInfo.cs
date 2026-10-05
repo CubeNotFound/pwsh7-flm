@@ -187,9 +187,11 @@ namespace System.Management.Automation
         /// </summary>
         internal PSLanguageMode? LanguageMode
         {
-            get;
-            set;
-        } = PSLanguageMode.FullLanguage;
+            get => _languageMode;
+            set => _languageMode = Utils.GetEffectiveLanguageMode(value);
+        }
+
+        private PSLanguageMode? _languageMode = PSLanguageMode.FullLanguage;
 
         /// <summary>
         /// Set to true when script module automatically exports all functions by default.

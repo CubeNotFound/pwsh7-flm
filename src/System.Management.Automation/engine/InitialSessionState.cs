@@ -1743,10 +1743,16 @@ namespace System.Management.Automation.Runspaces
             return new InitialSessionState();
         }
 
+        private PSLanguageMode _languageMode = PSLanguageMode.NoLanguage;
+
         /// <summary>
         /// Specifies the language mode to be used for this session state instance.
         /// </summary>
-        public PSLanguageMode LanguageMode { get; set; } = PSLanguageMode.NoLanguage;
+        public PSLanguageMode LanguageMode
+        {
+            get => _languageMode;
+            set => _languageMode = Utils.GetEffectiveLanguageMode(value);
+        }
 
         /// <summary>
         /// Specifies the directory to be used for collection session transcripts.

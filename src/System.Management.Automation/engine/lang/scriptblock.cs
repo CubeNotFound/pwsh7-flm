@@ -613,7 +613,13 @@ namespace System.Management.Automation
         // Script blocks that should always be run under FullLanguage mode (i.e.: set in
         // InitialSessionState, etc.) should explicitly set the LanguageMode to FullLanguage
         // when they are created.
-        internal PSLanguageMode? LanguageMode { get; set; }
+        private PSLanguageMode? _languageMode;
+
+        internal PSLanguageMode? LanguageMode
+        {
+            get => _languageMode;
+            set => _languageMode = Utils.GetEffectiveLanguageMode(value);
+        }
 
         internal enum ErrorHandlingBehavior
         {
